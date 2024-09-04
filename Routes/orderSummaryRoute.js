@@ -7,7 +7,7 @@ const {
   updateOrder,
   deleteOrder,
   deleteAllOrders,
-} = require("../controllers/orderSummaryController"); // Make sure the path is correct
+} = require("../Controllers/orderlawaController"); // Make sure the path is correct
 
 // Get all orders
 router.get("/", getAllOrders);
