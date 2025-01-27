@@ -69,10 +69,35 @@ const deleteCalculate = async (req, res) => {
       .json({ success: false, message: "Not Deleted Successfully" });
   }
 };
+const getCalculateByNameAndLastName = async (req, res) => {
+  try {
+    const { name, lastName } = req.params;
+
+    // Convert input parameters to lowercase
+    const nameParts = [name.toLowerCase(), lastName.toLowerCase()];
+
+    // Query the database to match both parts (partial and case-insensitive)
+    const findo = await calculateModel.findOne({
+      calculateName: {
+        $regex: new RegExp(nameParts.join(".*"), "i"), // Matches parts in sequence
+      },
+    });
+
+    if (!findo) {
+      return res.status(404).json({ message: "Calculation not found" });
+    }
+
+    res.status(200).json(findo);
+  } catch (error) {
+    console.error("Error fetching calculation:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 module.exports = {
   getAllCalculate,
   createCalculate,
   updateCalculate,
   deleteCalculate,
+  getCalculateByNameAndLastName,
 };
